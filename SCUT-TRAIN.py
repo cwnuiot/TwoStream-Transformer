@@ -20,7 +20,6 @@ class Rumor_Data(Dataset):
         self.image = dataset[1]
         #self.social_context = torch.from_numpy(np.array(dataset['social_feature']))
         self.label = dataset[2]
-        print('数据长',len(self.label))
 
     def __len__(self):
         return len(self.label)
@@ -33,8 +32,6 @@ train=savedata(traindir)
 test=savedata(testdir)
 train_dataset = Rumor_Data(train)
 test_dataset = Rumor_Data(test)
-time1 = time.time()
-print('加载时间：',time1 - time0)
 lr = 0.002
 seq_length = int(1120)
 certion = nn.CrossEntropyLoss()
@@ -48,14 +45,12 @@ test_loader = DataLoader(dataset=test_dataset,
 if torch.cuda.is_available():
     print('use gpu')
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = torch.device('cuda')
-permute = torch.Tensor(np.random.permutation(1040).astype(np.float64)).long()
 model = TwoStreamTransformer(3008)
 model = model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 from torch.optim.lr_scheduler import MultiStepLR
 lr_scheduler = MultiStepLR(optimizer,
-                               milestones=[20,35],
+                               milestones=[15,30],
                                gamma=0.1)
 certion = nn.CrossEntropyLoss()
 lrlist=[]
