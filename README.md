@@ -1,5 +1,5 @@
 # TwoStream-Transformer
-TwoStream Transformer on OLHCCR
+TwoStream Transformer for OLHCCR
 
 Online Handwritten Chinese Character Recognition Based on TwoStream Transformer
 
