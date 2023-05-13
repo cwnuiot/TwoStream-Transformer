@@ -7,7 +7,6 @@ from model import TwoStreamTransformer
 import torch.nn as nn
 import time
 from torch.utils.data import Dataset,DataLoader
-data_fixed_length=141
 def savedata(root):
     image, image1,lebal = [], [],[]
     vecs_pt = torch.load(root)
