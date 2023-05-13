@@ -62,24 +62,17 @@ def train(ep):
     for batch_idx, (data, target) in enumerate(train_loader):
         train_txt1,train_txt2,target=Variable(data[0].to(device)),Variable(data[1].to(device)),Variable(target.to(device))
         optimizer.zero_grad()
-        #print('1111',train_txt1.size())
         train_txt1 = train_txt1.view(-1, 1, seq_length)
         train_txt2 = torch.unsqueeze(train_txt2, dim=1)
-        #print('aaa',train_txt2.size())
         output = model(train_txt1,train_txt2)
         output = torch.squeeze(output, dim=0)
         loss = certion(output, target)
         loss.backward()
         optimizer.step()
         train_loss += loss
-        #test(ep)
     traintime = time.time()
     print(traintime - now)
     lr_scheduler.step(ep)
-    #print(lr)
-    lrlist.append(lr)
-    print('学习率',lr)
-acclist=[]
 def test(ep):
     model.eval()
     test_loss = 0
@@ -94,7 +87,6 @@ def test(ep):
             test_txt2=torch.unsqueeze(test_txt2,dim=1)
             output = model(test_txt1,test_txt2).to(device)
             endtime = time.time()
-#跑完程序后的时间-跑程序前的时间，结果保留两位浮数点
             #print(f"It took {endtime-starttime:.3f} seconds to compute")
             test_loss += certion(output, target).item()
             pred = output.data.max(1, keepdim=True)[1]
@@ -104,13 +96,10 @@ def test(ep):
             test_loss, correct, len(test_loader.dataset),
             100. * correct / len(test_loader.dataset)))
         acc=float(correct / len(test_loader.dataset))
-        acclist.append(acc)
-        print(acclist)
-        print(max(acclist))
         return test_loss
 epochs =45
 if __name__ == '__main__':
-    for epoch in range(1, epochs + 1):
+    for epoch in range(1, epochs):
         print(epoch)
         time3=time.time()
         train(epoch)
